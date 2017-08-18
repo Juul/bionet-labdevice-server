@@ -12,7 +12,7 @@ var colors = require('colors');
 var spawn = require('child_process').spawn;
 
 // the '--color' argument is intercepted by the the 'colors' node module
-var builder = spawn(path.join(__dirname, 'build.js'), ['-d', '--color']);
+var builder = spawn(path.join(path.join(path.dirname(require.resolve('gulp')), 'bin', 'gulp.js')), ['watch', '--color']);
 
 var server = spawn(path.join(__dirname, 'cmd.js'), [])
 
@@ -21,7 +21,7 @@ function prefix(str, prefix) {
   return els.join("\n"+prefix);
 }
 
-var buildPrefix = "[builder] ".gray;
+var buildPrefix = "[build] ".gray;
 builder.stdout.setEncoding('utf8');
 byline(builder.stdout).on('data', function(data) {
   process.stdout.write(buildPrefix + data + "\n");

@@ -2,13 +2,18 @@
   "name": "bionet-labeldevice-server",
   "version": "0.0.1",
   "scripts": {
-    "build": "bin/build.js",
-    "watch": "bin/build.js -d",
+    "build-js": "bin/build.js",
+    "watch-js": "bin/build.js -d",
+    "build-css": "gulp build:css",
+    "watch-css": "gulp watch:css",
+    "build": "gulp build",
+    "watch": "gulp watch",
     "dev": "bin/dev.js",
     "start": "bin/cmd.js"
   },
   "dependencies": {
     "beepbeep": "^1.2.1",
+    "bulma": "^0.5.1",
     "ecstatic": "^2.2.1",
     "minimist": "^1.2.0",
     "routes": "^2.1.0",
@@ -22,6 +27,9 @@
     "browserify": "^14.4.0",
     "byline": "^5.0.0",
     "colors": "^1.1.2",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "less": "^2.7.2",
     "preact": "^8.2.1",
     "watchify": "^3.9.0"
   },
