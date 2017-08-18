@@ -11,8 +11,17 @@ var byline = require('byline');
 var colors = require('colors');
 var spawn = require('child_process').spawn;
 
+var argv = minimist(process.argv.slice(2), {
+  boolean: [
+    'cold'
+  ]
+});
+
+var gulpTask = 'hot';
+if(argv.cold) gulpTask = 'watch';
+
 // the '--color' argument is intercepted by the the 'colors' node module
-var builder = spawn(path.join(path.join(path.dirname(require.resolve('gulp')), 'bin', 'gulp.js')), ['watch', '--color']);
+var builder = spawn(path.join(path.join(path.dirname(require.resolve('gulp')), 'bin', 'gulp.js')), [gulpTask, '--color']);
 
 var server = spawn(path.join(__dirname, 'cmd.js'), [])
 
@@ -33,6 +42,7 @@ byline(builder.stderr).on('data', function(data) {
 });
 
 builder.on('close', function(code) {
+  server.kill();
   process.exit(code);
 });
 
@@ -48,6 +58,7 @@ byline(server.stderr).on('data', function(data) {
 });
 
 server.on('close', function(code) {
+  server.kill();
   process.exit(code);
 });
 

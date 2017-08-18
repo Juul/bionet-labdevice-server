@@ -5,6 +5,7 @@ var path = require('path');
 var colors = require('colors');
 var browserify = require('browserify');
 var watchify = require('watchify');
+var hmr = require('browserify-hmr');
 var minimist = require('minimist');
 var beep = require('beepbeep');
 
@@ -63,7 +64,7 @@ function build(opts) {
   }
 
   var b = browserify({
-    entries: [path.join(__dirname, '..', 'src', 'index.js')],
+    entries: [path.join(__dirname, '..', 'src', 'js', 'index.js')],
     cache: {},
     packageCache: {}
   })
@@ -71,6 +72,11 @@ function build(opts) {
   if(opts.dev) {
     console.log("Watching for changes...".yellow);
     b.plugin(watchify);
+  }
+
+  if(opts.hot) {
+    console.log("Hot module reloading enabled".yellow);
+    b.plugin(hmr);
   }
 
   b.on('update', function(time) {
@@ -100,7 +106,8 @@ if (require.main === module) {
       d: 'dev'
     },
     boolean: [
-      'dev'
+      'dev',
+      'hot'
     ],
     default: {}
   });
@@ -115,6 +122,13 @@ if (require.main === module) {
     watch: function(opts) {
       opts = opts || opts;
       opts.dev = true;
+      return build(opts);
+    },
+
+    hot: function(opts) {
+      opts = opts || opts;
+      opts.dev = true;
+      opts.hot = true;
       return build(opts);
     }
   }
